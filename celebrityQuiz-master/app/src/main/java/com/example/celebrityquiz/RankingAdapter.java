@@ -50,7 +50,7 @@ public class RankingAdapter extends RecyclerView.Adapter {
             index.setText(String.format("%s", position + 1));
             user.setText(String.format("%s",  rank.email));
             collect.setText(String.format("%s", rank.collect));
-            time.setText(String.format("%s", rank.times));
+            time.setText(String.format("%s %s", rank.times, "초"));
         }
     }
 

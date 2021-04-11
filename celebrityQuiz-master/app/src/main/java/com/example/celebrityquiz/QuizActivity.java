@@ -106,7 +106,9 @@ public class QuizActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final int level = intent.getIntExtra("level", 0);
 //        seconds = intent.getIntExtra("seconds", 30);
+        //추가 --
         seconds = intent.getIntExtra("seconds", 90);
+        //--
         String string = null;
 
         // Safely read data from saved file
@@ -130,10 +132,12 @@ public class QuizActivity extends AppCompatActivity {
         List<Quiz> list = gson.fromJson(string, type);
 
         // Set sublist based on user set level
+        //추가 --
         if(level == 0){ //ranking
             assert list != null;
             quizList = list.subList(0, 15);
         }
+        // ---
         else if (level == 1) {
             assert list != null;
             quizList = list.subList(0, 5);
@@ -157,6 +161,7 @@ public class QuizActivity extends AppCompatActivity {
 
         // When user submit quiz, stop time and start Solution Activity
         Button buttonSubmit = findViewById(R.id.buttonSubmit);
+        // 추가 --
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,6 +182,7 @@ public class QuizActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        //--
     }
 
     // Start countdown. OnFinish, start Solution Activity

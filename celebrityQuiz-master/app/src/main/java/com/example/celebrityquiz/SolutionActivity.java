@@ -29,8 +29,10 @@ import java.util.Objects;
 //문제 정답 표기 화면
 public class SolutionActivity extends AppCompatActivity{
 
+    //추가 --
     private DatabaseReference mDatabase;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    //--
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,9 @@ public class SolutionActivity extends AppCompatActivity{
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        //추가
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        //--
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Results");

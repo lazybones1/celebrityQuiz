@@ -23,11 +23,17 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton radioButton60;
     private RadioButton radioButton90;
     private ProgressBar progressBarDownload;
+    //추가---
     private Button buttonStartQuiz, tmp;
+    //추가---
     public int level;
     public int seconds;
+
+    //추가---
     private long backKeyPressedTime = 0;
     private Toast toast;
+    //---
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +64,9 @@ public class MainActivity extends AppCompatActivity {
         Button buttonUpdate = findViewById(R.id.buttonUpdate);
         buttonStartQuiz = findViewById(R.id.buttonStartQuiz);
 
-        //나중에 삭제
+        //추가
         tmp = findViewById(R.id.tmp);
+        //--
 
         buttonUpdate.setEnabled(true);
         buttonStartQuiz.setEnabled(false);
@@ -128,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // Start QuizActivity with user settings/choices
+    // 추가 --
     public void login(View view) {
         Intent intent = new Intent(this, TempActivity.class);
         startActivity(intent);
@@ -148,4 +155,5 @@ public class MainActivity extends AppCompatActivity {
             System.exit(0);
         }
     }
+    //----
 }
