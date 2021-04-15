@@ -1,151 +1,155 @@
 package com.example.celebrityquiz;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
-
-    // Declare Variables
-    private RadioButton radioButtonLevelOne;
-    private RadioButton radioButtonLevelTwo;
-    private RadioButton radioButtonLevelThree;
-    private RadioButton radioButton30;
-    private RadioButton radioButton60;
-    private RadioButton radioButton90;
-    private ProgressBar progressBarDownload;
-    //추가---
-    private Button buttonStartQuiz, tmp;
-    //추가---
-    public int level;
-    public int seconds;
+    private Button startBtn, optionBtn, loginBtn;
+    private DrawerLayout drawerLayout;
+    private View drawerView;
+    private SwitchCompat switchCompat_bgm;
+    private SharedPreferences.Editor editor;
+    private Intent MAtoOP;
 
     //추가---
     private long backKeyPressedTime = 0;
-    private Toast toast;
+
     //---
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Define Level views
-        radioButtonLevelOne = findViewById(R.id.radioButtonLevelOne);
-        radioButtonLevelTwo = findViewById(R.id.radioButtonLevelTwo);
-        radioButtonLevelThree = findViewById(R.id.radioButtonLevelThree);
-        radioButtonLevelOne.setChecked(true);
-        radioButtonLevelTwo.setChecked(false);
-        radioButtonLevelThree.setChecked(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.hamburger);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        // Define Time views
-        radioButton30 = findViewById(R.id.radioButton30);
-        radioButton60 = findViewById(R.id.radioButton60);
-        radioButton90 = findViewById(R.id.radioButton90);
-        radioButton30.setChecked(true);
-        radioButton60.setChecked(false);
-        radioButton90.setChecked(false);
+        //bgm
+        switchCompat_bgm = findViewById(R.id.switchButton_bgm);
+        MAtoOP = new Intent(MainActivity.this, Option.class);
 
-        // Define Download views
-        progressBarDownload = findViewById(R.id.progressBarDownload);
-        progressBarDownload.setMax(100);
+        //navigation drawer
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        drawerView = (View)findViewById(R.id.drawer);
 
-        // Define Update and Starting buttons
-        Button buttonUpdate = findViewById(R.id.buttonUpdate);
-        buttonStartQuiz = findViewById(R.id.buttonStartQuiz);
-
-        //추가
-        tmp = findViewById(R.id.tmp);
-        //--
-
-        buttonUpdate.setEnabled(true);
-        buttonStartQuiz.setEnabled(false);
-        downloadTask = null; // Always initialize task to null
-    }
-
-    private DownloadTask downloadTask;
-
-    // Define Download methods
-    private DownloadListener downloadListener = new DownloadListener() {
-        @Override
-        public void onProgress(int progress) {
-            progressBarDownload.setProgress(progress);
-        }
-
-        @Override
-        public void onSuccess() {
-            downloadTask = null;
-            progressBarDownload.setProgress(progressBarDownload.getMax());
-            buttonStartQuiz.setEnabled(true); // Enable Start button when download is successful
-        }
-
-        @Override
-        public void onFailed() {
-            downloadTask = null;
-            //when download failed, close the foreground notification and create a new one about the failure
-            Toast.makeText(getApplicationContext(), "Download Failed", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onPaused() {
-            downloadTask = null;
-            Toast.makeText(getApplicationContext(), "Paused", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onCanceled() {
-            downloadTask = null;
-            Toast.makeText(getApplicationContext(), "Canceled", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    //update 버튼
-        public void onButtonUpdate(View view) {
-            if(downloadTask == null) {
-                // Import data from internet
-                String jsonUrl = "https://api.jsonbin.io/b/5e8f60bb172eb6438960f731";
-                downloadTask = new DownloadTask(downloadListener, this);
-                downloadTask.execute(jsonUrl);
+        //bgm
+        Intent i = getIntent();
+        switchCompat_bgm.setChecked(i.getBooleanExtra("BGMisChecked", false));
+        SharedPreferences sharedPreferences = getSharedPreferences("save_bgm", MODE_PRIVATE);
+        editor = getSharedPreferences("save_bgm",  MODE_PRIVATE).edit();
+        switchCompat_bgm.setChecked(sharedPreferences.getBoolean("value", false));
+        switchCompat_bgm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(switchCompat_bgm.isChecked()){
+                    startService(new Intent(getApplicationContext(), BgmService.class));
+                    editor.putBoolean("value", true);
+                    editor.apply();
+                    switchCompat_bgm.setChecked(true);
+                    MAtoOP.putExtra("BGMisChecked", true);
+                }
+                else {
+                    stopService(new Intent(getApplicationContext(), BgmService.class));
+                    editor.putBoolean("value", false);
+                    editor.apply();
+                    switchCompat_bgm.setChecked(false);
+                    MAtoOP.putExtra("BGMisChecked", false);
+                }
             }
+        });
+
+        //button to category
+        startBtn = findViewById(R.id.button_start);
+        startBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Category.class);
+                startActivity(intent);
+            }
+        });
+
+
+        //button to ranking
+        Button rankingBtn = findViewById(R.id.button_ranking);
+        rankingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RankingHome.class);
+                startActivity(intent);
+            }
+        });
+
+
+        //button to option
+        optionBtn = findViewById(R.id.button_option);
+        optionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(MAtoOP);
+            }
+        });
+
+        loginBtn = findViewById(R.id.button_login);
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            loginBtn.setText("로그인");
+        }
+        else {
+            loginBtn.setText("로그아웃");
+        }
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                login();
+            }
+        });
+
+        //navigation drawer
+        drawerLayout.setDrawerListener(listener);
+        drawerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
     }
 
-    // Start QuizActivity with user settings/choices
-    public void onButtonStartQuiz(View view) {
-        if(radioButtonLevelOne.isChecked()) level = 1;
-        if(radioButtonLevelTwo.isChecked()) level = 2;
-        if(radioButtonLevelThree.isChecked()) level = 3;
-
-        if(radioButton30.isChecked()) seconds = 30;
-        if(radioButton60.isChecked()) seconds = 60;
-        if(radioButton90.isChecked()) seconds = 90;
-
-        Intent intent = new Intent(this, QuizActivity.class);
-        intent.putExtra("level", level);
-        intent.putExtra("seconds", seconds);
-        startActivity(intent);
+    private void login(){
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+            startActivity(intent);
+        }
+        else{
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
     }
 
-    // 추가 --
-    public void login(View view) {
-        Intent intent = new Intent(this, TempActivity.class);
-        startActivity(intent);
-    }
 
-    @Override
+    @Override  //exit ment toast
     public void onBackPressed() {
         if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
             backKeyPressedTime = System.currentTimeMillis();
-            toast = Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this,
+                    "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT);
             toast.show();
             return;
         }
@@ -155,5 +159,31 @@ public class MainActivity extends AppCompatActivity {
             System.exit(0);
         }
     }
-    //----
+
+    @Override //hamburger tab click -> navigation drawer
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //navigation drawer
+    DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
+        @Override
+        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+        }
+        @Override
+        public void onDrawerOpened(@NonNull View drawerView) {
+        }
+        @Override
+        public void onDrawerClosed(@NonNull View drawerView) {
+        }
+        @Override
+        public void onDrawerStateChanged(int newState) {
+        }
+    };
 }

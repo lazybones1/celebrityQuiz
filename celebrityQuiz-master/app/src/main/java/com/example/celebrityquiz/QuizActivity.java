@@ -102,7 +102,7 @@ public class QuizActivity extends AppCompatActivity {
         buttonNext = findViewById(R.id.buttonNext);
         buttonPrevious = findViewById(R.id.buttonPrevious);
 
-        // Access intent interface and get variables //MainActivity로부터 인텐트 받음
+        // Access intent interface and get variables //MainActivity2로부터 인텐트 받음
         Intent intent = getIntent();
         final int level = intent.getIntExtra("level", 0);
 //        seconds = intent.getIntExtra("seconds", 30);

@@ -23,11 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RankingActivity extends AppCompatActivity {
-
     TextView rankingText, myRank;
     List<Ranking> rankingList = new ArrayList<>();;
     RecyclerView recyclerView;
-
     private DatabaseReference mDatabase;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -57,14 +55,14 @@ public class RankingActivity extends AppCompatActivity {
                         }
                     }
                 }
-                RankingAdapter rankingAdapter = new RankingAdapter(rankingList, RankingActivity.this);
+                RankingAdapter rankingAdapter = new RankingAdapter(rankingList,
+                        RankingActivity.this);
                 recyclerView.setLayoutManager(new LinearLayoutManager(RankingActivity.this));
                 recyclerView.setAdapter(rankingAdapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }

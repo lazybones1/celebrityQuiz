@@ -28,8 +28,7 @@ import java.util.Objects;
 
 //문제 정답 표기 화면
 public class SolutionActivity extends AppCompatActivity{
-
-    //추가 --
+    //추가
     private DatabaseReference mDatabase;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     //--
@@ -39,13 +38,15 @@ public class SolutionActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solution);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        //--
+
+
+
         // Define Navigation // 메뉴바 뒤로가기 화살표 설정
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        //추가
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        //--
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Results");
@@ -54,7 +55,6 @@ public class SolutionActivity extends AppCompatActivity{
         // Interface instance to get values from QuizActivity // QuizActivity로 부터 받은 intent
         int scoreValue = getIntent().getIntExtra("score", 0);
 
-        // 추가 시작
         int level = getIntent().getIntExtra("level", 0);
         int times = getIntent().getIntExtra("time", 0);
 
@@ -67,6 +67,8 @@ public class SolutionActivity extends AppCompatActivity{
         }
         // 추가 종료
 
+
+
         List<Quiz> quizList = (List<Quiz>) getIntent().getSerializableExtra("quizList");
 
         // Set view and display scoreValue
@@ -76,6 +78,10 @@ public class SolutionActivity extends AppCompatActivity{
         // Set score out-of view
         TextView scoreTotalView = findViewById(R.id.scoreTotalTextView);
         scoreTotalView.setText(String.valueOf(5));
+
+        if(level == 0){
+            scoreTotalView.setText(String.valueOf(15));
+        }
 
         // See function
         displayWellDone(scoreValue);
@@ -96,6 +102,7 @@ public class SolutionActivity extends AppCompatActivity{
 
         // display well done image if user gets all correct
         if (score == 5) imageView.setVisibility(View.VISIBLE);
+
     }
 
     //추가 시작

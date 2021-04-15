@@ -18,3 +18,6 @@ public class Ranking {
         this.times = times;
     }
 }
+
+
+

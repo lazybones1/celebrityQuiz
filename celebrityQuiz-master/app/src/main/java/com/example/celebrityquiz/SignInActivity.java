@@ -45,7 +45,8 @@ public class SignInActivity extends Activity {
         mPasswordText = findViewById(R.id.user_password);
         buttonGoogle = findViewById(R.id.btn_googleSignIn);
 
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
@@ -113,13 +114,15 @@ public class SignInActivity extends Activity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                            Intent intent = new Intent(SignInActivity.this,
+                                    MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(SignInActivity.this, "구글 로그인 실패", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, "구글 로그인 실패",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -134,14 +137,16 @@ public class SignInActivity extends Activity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                                Intent intent = new Intent(SignInActivity.this,
+                                        MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.e("로그인 오류" , " " + task.getException().toString());
-                                Toast.makeText(SignInActivity.this, "로그인 오류", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignInActivity.this, "로그인 오류",
+                                        Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

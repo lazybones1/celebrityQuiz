@@ -52,23 +52,28 @@ public class SignUpActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     FirebaseUser user = mAuth.getCurrentUser();
 
-                                    Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+                                    Intent intent = new Intent(SignUpActivity.this,
+                                            SignInActivity.class);
                                     startActivity(intent);
 
                                 } else {
                                     if(task.getException().toString() !=null){
-                                        Toast.makeText(SignUpActivity.this, "회원가입에 실패했습니다." ,Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignUpActivity.this,
+                                                "회원가입에 실패했습니다."
+                                                ,Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }
                         });
             }
             else{
-                Toast.makeText(SignUpActivity.this, "비밀번호가 일치하지 않습니다." ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignUpActivity.this, "비밀번호가 일치하지 않습니다."
+                        ,Toast.LENGTH_SHORT).show();
             }
         }
         else{
-            Toast.makeText(SignUpActivity.this, "아아디와 비밀번호를 확인해주세요." ,Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignUpActivity.this, "아아디와 비밀번호를 확인해주세요."
+                    ,Toast.LENGTH_SHORT).show();
         }
     }
 

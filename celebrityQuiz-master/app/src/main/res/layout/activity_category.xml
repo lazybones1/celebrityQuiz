@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Category">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <TextView
+        android:id="@+id/textview_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category"
+        android:textSize="50sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="150sp"/>
+
+
+    <Button
+        android:id="@+id/button_singer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#673AB7"
+        android:text="singer celebrity quiz"
+        android:textColor="#ffffff"
+        android:layout_marginTop="50sp"/>
+
+        <Button
+            android:id="@+id/button_moviestar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#2196F3"
+            android:text="movie star celebrity quiz"
+            android:textColor="#ffffff"/>
+
+        <Button
+            android:id="@+id/button_influencer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#8BC34A"
+            android:text="influencer celebrity quiz"
+            android:textColor="#ffffff"/>
+
+    <Button
+        android:id="@+id/button_category_to_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FF5722"
+        android:layout_gravity="center"
+        android:text="go to home"
+        android:layout_marginTop="100sp"
+        android:textColor="#ffffff"/>
+
+</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
